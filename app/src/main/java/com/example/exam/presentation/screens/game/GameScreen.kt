@@ -260,7 +260,7 @@ fun Y2KNumberPicker(
         ) {
 
             Text(
-                "Pick a Number ✨",
+                ":3 Pick a Number ✨",
                 color = Color(0xFFFF78C4),
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp

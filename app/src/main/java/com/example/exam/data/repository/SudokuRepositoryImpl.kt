@@ -36,7 +36,7 @@ class SudokuRepositoryImpl @Inject constructor(
                     puzzle = puzzleGrid,
                     solution = sudokuResponse.solution ?: emptyList(),
                     currentState = puzzleGrid.map { it.toMutableList() },
-                    size = SudokuSize.LARGE,
+                    size = size,
                     difficulty = difficulty
                 )
 

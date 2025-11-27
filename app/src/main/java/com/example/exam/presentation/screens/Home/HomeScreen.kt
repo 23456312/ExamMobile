@@ -88,6 +88,73 @@ fun HomeScreen(
 
                 Spacer(modifier = Modifier.height(40.dp))
 
+                // 💖 Board size selector
+                Text(
+                    "Board Size",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                var selectedSize by remember { mutableStateOf(SudokuSize.LARGE) } // default 9x9
+                var expandedSize by remember { mutableStateOf(false) }
+
+                ExposedDropdownMenuBox(
+                    expanded = expandedSize,
+                    onExpandedChange = { expandedSize = !expandedSize }
+                ) {
+                    OutlinedTextField(
+                        value = when (selectedSize) {
+                            SudokuSize.SMALL -> "4x4"
+                            SudokuSize.LARGE -> "9x9"
+                            SudokuSize.MEDIUM -> TODO()
+                        },
+                        onValueChange = {},
+                        readOnly = true,
+                        textStyle = LocalTextStyle.current.copy(color = Color.White),
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expandedSize) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(),
+                        colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
+                            focusedBorderColor = Color(0xFFFF3EB5),
+                            unfocusedBorderColor = Color(0xFFFFB5F5),
+                            cursorColor = Color(0xFFFF3EB5),
+                            focusedLabelColor = Color.White,
+                            unfocusedLabelColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(16.dp)
+                    )
+
+                    ExposedDropdownMenu(
+                        expanded = expandedSize,
+                        onDismissRequest = { expandedSize = false }
+                    ) {
+                        listOf(SudokuSize.SMALL, SudokuSize.LARGE).forEach { size ->
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        when (size) {
+                                            SudokuSize.SMALL -> "4x4"
+                                            SudokuSize.LARGE -> "9x9"
+                                            SudokuSize.MEDIUM -> TODO()
+                                        },
+                                        color = Color.Black
+                                    )
+                                },
+                                onClick = {
+                                    selectedSize = size
+                                    expandedSize = false
+                                }
+                            )
+                        }
+                    }
+                }
+
+
                 Text(
                     "Difficulty",
                     fontSize = 16.sp,
@@ -153,7 +220,8 @@ fun HomeScreen(
 
                 // 🌈 Main buttons
                 Y2KButton("🌈 New Game", Color(0xFFFF3EB5)) {
-                    onGeneratePuzzle(SudokuSize.LARGE, selectedDifficulty)
+                    onGeneratePuzzle(selectedSize, selectedDifficulty)
+
                 }
 
                 if (hasSavedGame) {
